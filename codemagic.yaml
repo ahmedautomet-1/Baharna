@@ -1,0 +1,23 @@
+workflows:
+  ios-simulator:
+    name: Baharna iOS Simulator Build
+    max_build_duration: 60
+    environment:
+      flutter: 3.32.1
+      xcode: latest
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Build iOS simulator
+        script: |
+          flutter build ios --simulator --no-codesign
+          cd build/ios/iphonesimulator
+          tar -czf baharna_simulator.app.tar.gz Baharna.app
+    artifacts:
+      - build/ios/iphonesimulator/baharna_simulator.app.tar.gz
+    publishing:
+      email:
+        recipients:
+          - eng.ahmed.idris@gmail.com
+        notify:
+          success: true
