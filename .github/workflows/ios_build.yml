@@ -1,0 +1,34 @@
+name: Build iOS Simulator
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.1'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Build iOS (no codesign)
+        run: |
+          flutter build ios --simulator --no-codesign
+          cd build/ios/iphonesimulator
+          tar -czf baharna_ios_simulator.tar.gz Baharna.app
+      
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: baharna-ios-simulator
+          path: build/ios/iphonesimulator/baharna_ios_simulator.tar.gz
+          retention-days: 7
