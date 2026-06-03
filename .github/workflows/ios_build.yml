@@ -24,7 +24,7 @@ jobs:
         run: |
           flutter build ios --simulator --no-codesign
           cd build/ios/iphonesimulator
-          tar -czf baharna_ios_simulator.tar.gz Baharna.app
+          tar -czf baharna_ios_simulator.tar.gz Runner.app
       
       - name: Upload iOS artifact
         uses: actions/upload-artifact@v4
